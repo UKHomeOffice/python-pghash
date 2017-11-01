@@ -8,7 +8,12 @@ Where you would do this:
 
 instead do this:
     age_attr = 1
-    age = pghash((age_attr),seed=123).randint(1,100)
+    pgh = pghash.pghgen(seed=123).hash
+    age = pgh((age_attr)).randint(1,100)
+
+The pghgen class stores the seed and provides a function that generates a phhash object from a
+tuple. The pghash object can then be used to provide a "random" number that conforms to one of
+the distributions supported (as per the random module functions random, randint, gauss and choice).
 
 Everything needs a unique tuple (or list). The tuple defines the attribute that you are generating.
 If you only want one of the attribute per random seed, you only need one entry in the tuple.
@@ -31,7 +36,7 @@ With pghash, you might do this:
     h1_people=2
     h3_surname=1
     h3_forename=2
-    pgh = pghrng.pghgen(seed=123).hash
+    pgh = pghash.pghgen(seed=123).hash
     num_people = pgh((h1_peoplecount)).randint(1,100)
     people = [dict() for x in range(num_people)]
     for h2_index, person in enumerate(people,1):
