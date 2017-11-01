@@ -13,4 +13,4 @@ Dependencies
 Requires two non-core modules: xxhash and numpy.
 
 xxhash is non-trivial on Windows, as installation requires the Microsoft C++ 
-compiler for either `Python 2.7 <https://www.microsoft.com/en-ie/download/details.aspx?id=44266/>`__ or `Python 3.0 <https://www.visualstudio.com/downloads/#build-tools-for-visual-studio-2017>.
+compiler for either `Python 2.7 <https://www.microsoft.com/en-ie/download/details.aspx?id=44266/>`__ or `Python 3.0 <https://www.visualstudio.com/downloads/#build-tools-for-visual-studio-2017>`__.
