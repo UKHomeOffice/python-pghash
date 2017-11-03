@@ -7,6 +7,11 @@ than relying on setting a seed and calling the Random object over and over
 to generate numbers, pghash sets the seed and you pass in a distinct tuple
 for every random number you need.
 
+Usage
+-----
+
+Detailed usage information is in pghash/init__.py
+
 Dependencies
 ------------
 
