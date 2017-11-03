@@ -18,4 +18,4 @@ compiler for either `Python 2.7 <https://www.microsoft.com/en-ie/download/detail
 Discussion
 ----------
 
-Public discusson can be found on `python.io <https://python-forum.io/Thread-Module-for-procedural-generation-with-hashes>`__.
+Public discusson can be found on `python-forum.io <https://python-forum.io/Thread-Module-for-procedural-generation-with-hashes>`__.
