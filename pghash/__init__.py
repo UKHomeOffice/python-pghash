@@ -11,7 +11,7 @@ instead do this:
     pgh = pghash.pghgen(seed=123).hash
     age = pgh((age_attr)).randint(1,100)
 
-The pghgen class stores the seed and provides a function that generates a phhash object from a
+The pghgen class stores the seed and provides a function that generates a pghash object from a
 tuple. The pghash object can then be used to provide a "random" number that conforms to one of
 the distributions supported (as per the random module functions random, randint, gauss and choice).
 
