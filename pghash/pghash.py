@@ -1,10 +1,11 @@
 from __future__ import division
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __author__ = 'Phil Hibbs'
 
 import xxhash
 from numpy import sqrt, log, sin, cos, pi
+import types
 
 def gaussian(value1, value2):
     """
@@ -21,23 +22,28 @@ class pghgen(object):
     Stores a seed and a separator, and provides a function
     that creates pghash objects from tuples.
     """
-    def __init__(self, seed=0, sep=','):
+    def __init__(self, joiner=lambda t: str(t), seed=0):
         self.seed = seed
-        self.sep = sep
+        if type(joiner) is types.LambdaType:
+            self.joiner = joiner
+        else: # If it's not a lambda, then build a lambda on the assumption that it's a tuple or a three-character string
+            f1 = lambda t: joiner[0] + joiner[1].join(map(str, t)) + joiner[2] if hasattr(t, '__iter__') else str(t)
+            m1 = lambda t: joiner[1].join(map(f1, t))
+            self.joiner = m1
 
     def hash(self, tup):
         """
         Creates pghash objects from tuples using the stored seed and separator.
         """
-        return pghash(tup=tup, seed=self.seed, sep=self.sep)
+        return pghash(tup=tup, seed=self.seed, joiner=self.joiner)
 
 class pghash(object):
     """
     Hashes a tuple using a seed, and provides the answer in a variety of forms
     (hex, float, int, gaussian).
     """
-    def __init__(self, tup, seed=0, sep=','):
-        self.hex = xxhash.xxh64(sep.join(map(str,tup)), seed=seed).hexdigest()
+    def __init__(self, tup, joiner, seed=0):
+        self.hex = xxhash.xxh64(joiner(tup), seed=seed).hexdigest()
 
     def pgvalue(self):
         """

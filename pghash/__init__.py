@@ -64,5 +64,5 @@ accept that your generated data will totally change if you change the seperator.
 """
 from pghash import pghgen, pghash
 
-VERSION = '0.0.1'
+VERSION = '0.0.2'
 __all__ = ['pghgen', 'pghash', 'VERSION']
