@@ -4,17 +4,18 @@ __version__ = '0.0.2'
 __author__ = 'Phil Hibbs'
 
 import xxhash
-from numpy import sqrt, log, sin, cos, pi
+from math import sqrt, log, sin, cos, pi
 import types
+
+TAU = 2.0*pi
 
 def gaussian(value1, value2):
     """
     Converts two flat distributed numbers into a gaussian distribution
     Input from 0-1, output mean 0 STDDEV 1.
     """
-    tau = 2*pi
-    output1 = sqrt(-2*log(value1))*cos(tau*value2)
-    output2 = sqrt(-2*log(value1))*sin(tau*value2)
+    output1 = sqrt(-2*log(value1))*cos(TAU*value2)
+    output2 = sqrt(-2*log(value1))*sin(TAU*value2)
     return output1, output2
 
 class pghgen(object):
@@ -83,8 +84,14 @@ class pghash(object):
         floatpair = (intpair[0]/2**32, intpair[1]/2**32)
         return gaussian(floatpair[0], floatpair[1])[0]*sigma+mu
 
-    def choice(self, collection):
+    def normalvariate(self, mu, sigma):
+        """
+        Returns the hash value as a number with a mean of mu and a standard deviation of sigma.
+        """
+        return self.gauss(mu, sigma)
+
+    def choice(self, seq):
         """
         Returns an element picked out of collection using the hash value as a random number.
         """
-        return collection[self.randint(0, len(collection)-1)]
+        return seq[int(self.random() * len(seq))]
