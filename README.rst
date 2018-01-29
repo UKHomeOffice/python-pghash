@@ -9,7 +9,7 @@ you need.
 
 Usage
 -----
-::
+
 Detailed usage information is in pghash/__init__.py
 
 Dependencies
