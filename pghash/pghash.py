@@ -1,9 +1,9 @@
 from __future__ import division
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __author__ = 'Phil Hibbs'
 
-import xxhash
+import md5
 from math import sqrt, log, sin, cos, pi
 import types
 
@@ -34,21 +34,21 @@ class pghgen(object):
 
     def hash(self, tup):
         """
-        Creates pghash objects from tuples using the stored seed and separator.
+        Creates pghash objects from tuples using the stored separator.
         """
-        return pghash(tup=tup, seed=self.seed, joiner=self.joiner)
+        return pghash(tup=(self.seed,tup), joiner=self.joiner)
 
 class pghash(object):
     """
-    Hashes a tuple using a seed, and provides the answer in a variety of forms
+    Hashes a tuple, and provides the answer in a variety of forms
     (hex, float, int, gaussian).
     """
-    def __init__(self, tup, joiner, seed=0):
-        self.hex = xxhash.xxh64(joiner(tup), seed=seed).hexdigest()
+    def __init__(self, tup, joiner=lambda t: str(t)):
+        self.hex = md5.new(joiner(tup)).hexdigest()
 
     def pgvalue(self):
         """
-        Returns the full integer value of the hash from 0 to 2^^64-1.
+        Returns the full integer value of the hash from 0 to 2^^128-1.
         """
         return int(self.hex, 16)
 
@@ -56,19 +56,19 @@ class pghash(object):
         """
         Returns the hash value as hex in two halves.
         """
-        return self.hex[:8], self.hex[8:]
+        return self.hex[:16], self.hex[16:]
 
     def pgvalues(self):
         """
         Returns the hash value as integers in two halves.
         """
-        return int(self.hex[:8], 16), int(self.hex[8:], 16)
+        return int(self.hex[:16], 16), int(self.hex[16:], 16)
 
     def random(self):
         """
         Returns the hash value as a float between 0 and 1.
         """
-        return self.pgvalue() / 2**64
+        return self.pgvalue() / 2**128
 
     def randint(self, lbound, ubound):
         """
@@ -81,7 +81,7 @@ class pghash(object):
         Returns the hash value as a number with a mean of mu and a standard deviation of sigma.
         """
         intpair = self.pgvalues()
-        floatpair = (intpair[0]/2**32, intpair[1]/2**32)
+        floatpair = (intpair[0]/2**64, intpair[1]/2**64)
         return gaussian(floatpair[0], floatpair[1])[0]*sigma+mu
 
     def normalvariate(self, mu, sigma):
